@@ -96,9 +96,11 @@ Run it as many times as you want — it's **idempotent**!
 | File | Purpose |
 |------|---------|
 | `scripts/aithon_ai.py` | Standalone converter |
+| `scripts/example.py` | Original Python example |
+| `scripts/example_ai.py` | Converted example |
+| `scripts/complex.py` | Buggy test file |
+| `scripts/complex_ai.py` | Fixed version |
 | `aithon/` | Package (pip install) |
-| `example.py` | Original Python example |
-| `example_ai.py` | Converted example |
 | [Testimony.md](./Testimony.md) | The story of how Aithon was born |
 
 ## Usage
