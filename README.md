@@ -103,15 +103,29 @@ Run it as many times as you want — it's **idempotent**!
 | `aithon/` | Package (pip install) |
 | [Testimony.md](./Testimony.md) | The story of how Aithon was born |
 
+## Install
+
+```bash
+# Install directly from GitHub (works now!)
+pip install git+https://github.com/kirkcameron/aithon.git
+
+# Or clone and install locally
+git clone https://github.com/kirkcameron/aithon.git
+cd aithon
+pip install -e .
+
+# Or use standalone without install
+python scripts/aithon_ai.py --input input.py --output input_ai.py
+```
+
 ## Usage
 
 ```bash
-# Option 1: Standalone (no install)
-python scripts/aithon_ai.py --input input.py --output input_ai.py
-
-# Option 2: Install as package
-pip install aithon
+# After pip install
 aithon --input input.py --output input_ai.py
+
+# Standalone (no install needed)
+python scripts/aithon_ai.py --input input.py --output input_ai.py
 
 # Convert directory
 aithon --directory ./src/ --output-dir ./ai/
