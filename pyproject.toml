@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aithon"
+version = "0.1.0"
+description = "AI-First Structured Python with numbered block terminators"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Kirk Cameron", email = "kirk@example.com"},
+]
+keywords = ["python", "ai", "code", "formatter", "block", "terminator"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.scripts]
+aithon = "aithon.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/kirkcameron/aithon"

@@ -1,0 +1,2 @@
+[console_scripts]
+aithon = aithon.__main__:main

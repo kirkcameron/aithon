@@ -273,13 +273,18 @@ def convert_directory(input_dir, output_dir=None, dry_run=False):
         # Calculate relative path
         rel_path = py_file.relative_to(input_path)
         
+        # Check if already _ai file - keep name as-is
+        if rel_path.stem.endswith('_ai'):
+            stem = rel_path.stem
+        else:
+            stem = rel_path.stem + '_ai'
+        
         # Determine output file path
         if output_dir:
-            out_file = output_path / rel_path.with_suffix('.ai')
-#/46
+            out_file = output_path / (stem + '.py')
         else:
-            # In-place: replace .py with .ai
-            out_file = py_file.with_suffix('.ai')
+            # In-place: keep same directory
+            out_file = py_file.parent / (stem + '.py')
 #/47
         
         if dry_run:
