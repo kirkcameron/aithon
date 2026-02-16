@@ -19,23 +19,75 @@ Python uses indentation to define code blocks. This creates two issues:
 
 ## The Solution
 
-Aithon adds `#/` as explicit block terminators:
+Aithon adds `#/n` as numbered block terminators:
 
 ```python
 def hello():
     if x > 0:
         print(x)
-    #/
+    #/1
 #/
 ```
 
-The `#/` tells you EXACTLY where each block ends.
+The `#/1` tells you EXACTLY where each block ends — with a unique number per block!
+
+### Why Numbered Terminators?
+
+- **Unique identification** — Each block has its own number (#/1, #/2, #/3...)
+- **Error-free editing** — When fixing code, you know exactly which block you're editing
+- **No ambiguity** — Say "fix block #/7" and everyone knows exactly what you mean
+
+### How Fixing Works
+
+When an AI agent fixes broken code, it has two options:
+
+**Option A: Write plain Python**
+```python
+def broken_function(x, y):
+    if x > 0:
+        if y > 0:
+            result = x + y
+    elif x < 0:
+        result = x * 2
+    else:
+        result = 0
+    return result
+```
+
+**Option B: Add simple #/ terminators (no numbers needed)**
+```python
+def broken_function(x, y):
+    if x > 0:
+        if y > 0:
+            result = x + y
+    #
+    elif x < 0:
+        result = x * 2
+    #
+    else:
+        result = 0
+    #
+    return result
+```
+
+Then just run:
+```bash
+python aithon.ai broken.py -o fixed.ai
+```
+
+Aithon automatically:
+- ✅ Adds unique numbers to each block (#/1, #/2, #/3...)
+- ✅ Strips any existing #/ or #/n terminators first
+- ✅ Re-numbers everything cleanly
+
+Run it as many times as you want — it's **idempotent**!
 
 ## Why This Helps AI
 
 - **Explicit beats implicit** - AI can "see" structure, not guess
-- **Pattern matching** - `#/` is a clear token, not whitespace
+- **Pattern matching** - `#/n` is a clear token, not whitespace
 - **Robust generation** - Harder to mess up with explicit anchors
+- **Easy fixing** - Agents can write plain Python or simple #/, then let aithon.ai do the rest
 
 ## Tools
 
@@ -49,12 +101,31 @@ The `#/` tells you EXACTLY where each block ends.
 ## Usage
 
 ```bash
-# Convert Python to .ai
-python aithon.ai input.py > output.ai
+# Convert Python to .ai (adds numbered terminators)
+python aithon.ai --input input.py --output output.ai
+
+# Convert .ai to .ai (re-numbers everything - idempotent!)
+python aithon.ai --input output.ai --output output.ai
+
+# Convert directory
+python aithon.ai --directory ./src/ --output-dir ./ai/
+
+# Dry run to see what would be converted
+python aithon.ai --directory ./src/ --dry-run
 
 # Run .ai as Python (it's valid Python!)
 python output.ai
 ```
+
+### Idempotent & Safe
+
+Aithon can be run on **any** file, any number of times:
+
+- On `.py` files → adds numbered #/n terminators
+- On `.ai` files → strips old terminators, re-numbers cleanly
+- Run 10 times → same result every time
+
+No matter what you throw at it, aithon.ai produces valid, consistently-numbered output.
 
 ## The Story
 
