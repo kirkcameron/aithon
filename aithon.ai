@@ -1,0 +1,183 @@
+#!/usr/bin/env python3
+"""
+Aithon Converter - Adds block terminators to Python code
+Usage: python aithon.ai <input.py> [output.ai]
+       python aithon.ai --dir <directory> [-o <output_dir>]
+"""
+
+import sys
+import ast
+import os
+from pathlib import Path
+import argparse
+
+def get_line_terminators(tree, source_lines):
+    """Find all line numbers where we need to add terminators"""
+    terminators = set()
+    
+    for node in ast.walk(tree):
+        # Skip one-liners
+        if hasattr(node, 'lineno') and hasattr(node, 'end_lineno'):
+            if node.lineno == node.end_lineno:
+                continue
+#/
+        
+        # Find the last line of this block
+        if hasattr(node, 'body') and node.body:
+            last_stmt = node.body[-1]
+            if hasattr(last_stmt, 'end_lineno'):
+                # Don't add terminator if the last statement is a pass/return/raise at same level
+                if isinstance(last_stmt, (ast.Pass, ast.Return, ast.Raise)):
+                    # Check if there's nothing after it in the block
+                    terminators.add(last_stmt.end_lineno)
+#/
+                else:
+                    terminators.add(last_stmt.end_lineno)
+#/
+        
+        # Handle except handlers
+        if hasattr(node, 'handlers') and node.handlers:
+            for handler in node.handlers:
+                if handler.body and handler.body[-1]:
+                    terminators.add(handler.body[-1].end_lineno)
+#/
+        
+        # Handle else blocks (if/while/for)
+        if hasattr(node, 'orelse') and node.orelse:
+            if node.orelse[-1]:
+                terminators.add(node.orelse[-1].end_lineno)
+#/
+        
+        # Handle finally blocks
+        if hasattr(node, 'finalbody') and node.finalbody:
+            if node.finalbody[-1]:
+                terminators.add(node.finalbody[-1].end_lineno)
+#/
+    
+    return terminators
+#/
+
+def convert_aithon(source_code):
+    """Convert Python source to Aithon format"""
+    tree = ast.parse(source_code)
+    source_lines = source_code.split('\n')
+    
+    terminators = get_line_terminators(tree, source_lines)
+    
+    # Build new source with terminators
+    new_lines = []
+    for i, line in enumerate(source_lines, 1):
+        new_lines.append(line)
+        if i in terminators and line.strip():
+            new_lines.append('#/')
+#/
+    
+    return '\n'.join(new_lines)
+#/
+
+def convert_file(input_path, output_path=None):
+    """Convert a single Python file"""
+    with open(input_path, 'r') as f:
+        source = f.read()
+#/
+    
+    aithon_code = convert_aithon(source)
+    
+    if output_path:
+        output_dir = os.path.dirname(output_path)
+        if output_dir:
+            os.makedirs(output_dir, exist_ok=True)
+#/
+        with open(output_path, 'w') as f:
+            f.write(aithon_code)
+#/
+        return f"Converted: {input_path} -> {output_path}"
+#/
+    else:
+        print(aithon_code)
+        return None
+#/
+
+def convert_directory(input_dir, output_dir=None, dry_run=False):
+    """Convert all .py files in a directory recursively"""
+    input_path = Path(input_dir)
+    
+    if output_dir:
+        output_path = Path(output_dir)
+    else:
+        output_path = input_path
+#/
+    
+    # Find all .py files
+    py_files = list(input_path.rglob("*.py"))
+    
+    if not py_files:
+        return f"No .py files found in {input_dir}"
+#/
+    
+    results = []
+    for py_file in py_files:
+        # Calculate relative path
+        rel_path = py_file.relative_to(input_path)
+        
+        # Determine output file path
+        if output_dir:
+            out_file = output_path / rel_path.with_suffix('.ai')
+        else:
+            # In-place: replace .py with .ai
+            out_file = py_file.with_suffix('.ai')
+#/
+        
+        if dry_run:
+            results.append(f"DRY RUN: {py_file} -> {out_file}")
+#/
+        else:
+            msg = convert_file(py_file, out_file)
+            results.append(msg)
+#/
+    
+    return "\n".join(results)
+#/
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Aithon - AI-First Structured Python Converter",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  python aithon.ai --input input.py
+  python aithon.ai --input input.py --output output.ai
+  python aithon.ai --directory ./src/
+  python aithon.ai --directory ./src/ --output-dir ./ai/
+  python aithon.ai --directory ./src/ --dry-run
+        """
+    )
+    
+    parser.add_argument('--input', dest='input_file', 
+                        help='Input Python file')
+    parser.add_argument('--output', dest='output_file', 
+                        help='Output .ai file')
+    parser.add_argument('--directory', dest='directory',
+                        help='Input directory to convert recursively')
+    parser.add_argument('--output-dir', dest='output_dir',
+                        help='Output directory (for directory mode)')
+    parser.add_argument('--dry-run', action='store_true',
+                        help='Show what would be converted without converting')
+    
+    args = parser.parse_args()
+    
+    # Directory mode
+    if args.directory:
+        result = convert_directory(args.directory, args.output_dir, args.dry_run)
+        print(result)
+#/
+    # Single file mode
+    elif args.input_file:
+        if args.output_file:
+            convert_file(args.input_file, args.output_file)
+        else:
+            convert_file(args.input_file)
+#/
+    else:
+        parser.print_help()
+#/
