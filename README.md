@@ -95,8 +95,8 @@ Run it as many times as you want — it's **idempotent**!
 
 | File | Purpose |
 |------|---------|
-| `aithon_ai.py` | Standalone converter |
-| `aithon` (pip) | Installable package |
+| `scripts/aithon_ai.py` | Standalone converter |
+| `aithon/` | Package (pip install) |
 | `example.py` | Original Python example |
 | `example_ai.py` | Converted example |
 | [Testimony.md](./Testimony.md) | The story of how Aithon was born |
@@ -105,7 +105,7 @@ Run it as many times as you want — it's **idempotent**!
 
 ```bash
 # Option 1: Standalone (no install)
-python aithon_ai.py --input input.py --output input_ai.py
+python scripts/aithon_ai.py --input input.py --output input_ai.py
 
 # Option 2: Install as package
 pip install aithon
