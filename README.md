@@ -8,7 +8,7 @@
 
 ## What is Aithon?
 
-Aithon is an AI-first dialect of Python that adds explicit block terminators (`#/`) to code. It's designed to make code easier for AI to understand, generate, and pattern-match.
+Aithon is an AI-first dialect of Python that adds explicit block terminators (`#/n`) to code. It's designed to make code easier for AI to understand, generate, and pattern-match.
 
 ## The Problem
 
@@ -26,10 +26,11 @@ def hello():
     if x > 0:
         print(x)
     #/1
+    return x
 #/
 ```
 
-The `#/1` tells you EXACTLY where each block ends — with a unique number per block!
+The `#/1` marks where the `if` block ends. The `#/` marks where the function ends.
 
 ### Why Numbered Terminators?
 
@@ -54,25 +55,26 @@ def broken_function(x, y):
     return result
 ```
 
-**Option B: Add simple #/ terminators (no numbers needed)**
+**Option B: Add #/ terminators (numbers optional - aithon.ai adds them)**
 ```python
 def broken_function(x, y):
     if x > 0:
         if y > 0:
             result = x + y
-    #
+    #/1
     elif x < 0:
         result = x * 2
-    #
+    #/2
     else:
         result = 0
-    #
+    #/3
     return result
+#/
 ```
 
 Then just run:
 ```bash
-python aithon.ai broken.py -o fixed.ai
+python aithon.ai --input broken.py --output fixed.ai
 ```
 
 Aithon automatically:
@@ -87,7 +89,7 @@ Run it as many times as you want — it's **idempotent**!
 - **Explicit beats implicit** - AI can "see" structure, not guess
 - **Pattern matching** - `#/n` is a clear token, not whitespace
 - **Robust generation** - Harder to mess up with explicit anchors
-- **Easy fixing** - Agents can write plain Python or simple #/, then let aithon.ai do the rest
+- **Easy fixing** - Agents can write plain Python or add #/, then let aithon.ai do the rest
 
 ## Tools
 
@@ -131,9 +133,10 @@ No matter what you throw at it, aithon.ai produces valid, consistently-numbered 
 
 Aithon was born from a 2am conversation about Python's whitespace frustrations. The insight came when we realized that `#/` isn't just about formatting - it's about EXPLICIT STRUCTURE that AI can understand.
 
-The `#/` terminator makes code:
+The `#/n` terminator makes code:
 - Visible to humans (you can SEE block boundaries)
 - Parseable by AI (explicit tokens, not guessing)
+- Fixable by agents (numbered blocks = unambiguous editing)
 
 ## License
 
