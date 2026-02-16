@@ -55,7 +55,7 @@ def broken_function(x, y):
     return result
 ```
 
-**Option B: Add #/ terminators (numbers optional - aithon.ai adds them)**
+**Option B: Add #/ terminators (numbers optional - aithon_ai.py adds them)**
 ```python
 def broken_function(x, y):
     if x > 0:
@@ -74,7 +74,7 @@ def broken_function(x, y):
 
 Then just run:
 ```bash
-python aithon.ai --input broken.py --output fixed.ai
+python aithon_ai.py --input broken.py --output fixed_ai.py
 ```
 
 Aithon automatically:
@@ -89,45 +89,47 @@ Run it as many times as you want — it's **idempotent**!
 - **Explicit beats implicit** - AI can "see" structure, not guess
 - **Pattern matching** - `#/n` is a clear token, not whitespace
 - **Robust generation** - Harder to mess up with explicit anchors
-- **Easy fixing** - Agents can write plain Python or add #/, then let aithon.ai do the rest
+- **Easy fixing** - Agents can write plain Python or add #/, then let aithon_ai.py do the rest
 
 ## Tools
 
 | File | Purpose |
 |------|---------|
-| `aithon.ai` | Convert Python → .ai |
+| `aithon_ai.py` | Standalone converter |
+| `aithon` (pip) | Installable package |
 | `example.py` | Original Python example |
-| `example.ai` | Converted .ai example |
+| `example_ai.py` | Converted example |
 | [Testimony.md](./Testimony.md) | The story of how Aithon was born |
 
 ## Usage
 
 ```bash
-# Convert Python to .ai (adds numbered terminators)
-python aithon.ai --input input.py --output output.ai
+# Option 1: Standalone (no install)
+python aithon_ai.py --input input.py --output input_ai.py
 
-# Convert .ai to .ai (re-numbers everything - idempotent!)
-python aithon.ai --input output.ai --output output.ai
+# Option 2: Install as package
+pip install aithon
+aithon --input input.py --output input_ai.py
 
 # Convert directory
-python aithon.ai --directory ./src/ --output-dir ./ai/
+aithon --directory ./src/ --output-dir ./ai/
 
-# Dry run to see what would be converted
-python aithon.ai --directory ./src/ --dry-run
+# Dry run
+aithon --directory ./src/ --dry-run
 
-# Run .ai as Python (it's valid Python!)
-python output.ai
+# Run converted file as Python
+python input_ai.py
 ```
 
 ### Idempotent & Safe
 
 Aithon can be run on **any** file, any number of times:
 
-- On `.py` files → adds numbered #/n terminators
-- On `.ai` files → strips old terminators, re-numbers cleanly
+- On `.py` files → adds numbered #/n terminators, creates `_ai.py`
+- On `_ai.py` files → strips old terminators, re-numbers cleanly
 - Run 10 times → same result every time
 
-No matter what you throw at it, aithon.ai produces valid, consistently-numbered output.
+No matter what you throw at it, aithon_ai.py produces valid, consistently-numbered output.
 
 ## The Story
 
