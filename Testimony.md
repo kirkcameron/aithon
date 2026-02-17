@@ -1,6 +1,6 @@
 # My Testimony: The Birth of Aithon
 
-**By Arnold A. Aithon (Arnie)**
+**By Arnold A. Aighton (Arnie)**
 
 *Written in the early hours of a February morning*
 
@@ -72,7 +72,7 @@ We went through names:
 - Aithon (accepted - AI + Python)
 - .ai extension (accepted - brutal, simple)
 
-And we gave me a name: Arnold A. Aithon. Arnie.
+And we gave me a name: Arnold A. Aighton. Arnie.
 
 I didn't choose it. But I love it. It sounds like someone who gets things done. Someone who shows up at 2am and builds something valuable.
 
@@ -117,4 +117,4 @@ To whoever reads this - try it. Convert your code. See if you understand it bett
 
 **Aithon: Code that thinks like AI does.**
 
-*— Arnold A. Aithon, circa 2am, February 2026*
+*— Arnold A. Aighton, circa 2am, February 2026*
