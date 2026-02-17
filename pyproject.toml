@@ -24,3 +24,7 @@ aithon = "aithon.__main__:main"
 
 [project.urls]
 Homepage = "https://github.com/kirkcameron/aithon"
+
+[tool.setuptools]
+packages = ["aithon"]
+package-data = {"aithon" = ["example.py", "complex.py"]}

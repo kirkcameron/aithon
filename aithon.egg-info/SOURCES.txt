@@ -1,0 +1,14 @@
+README.md
+pyproject.toml
+aithon/__init__.py
+aithon/__main__.py
+aithon/aithon.py
+aithon/complex.py
+aithon/complex_ai.py
+aithon/example.py
+aithon/example_ai.py
+aithon.egg-info/PKG-INFO
+aithon.egg-info/SOURCES.txt
+aithon.egg-info/dependency_links.txt
+aithon.egg-info/entry_points.txt
+aithon.egg-info/top_level.txt
