@@ -71,7 +71,7 @@ aithon --action restore --srcdir ./ai/ --tgtdir ./clean/
 | Action | Behavior |
 |--------|----------|
 | `replica` (default) | Creates new `_ai.py` file. Original unchanged. |
-| `replace` | Overwrites original file. Cannot be undone! |
+| `replace` | Overwrites original file. Can be undone with restore! |
 | `restore` | Remove `#/<line>` markers from files. |
 
 ## Examples
